@@ -1,0 +1,16 @@
+{
+  "name": "form-plugin",
+  "version": "0.0.1",
+  "description": "Form class to submit form",
+  "main": "dist/Form.js",
+  "author": "Franco RD",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FrancoPhoenix/form-plugin.git"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "axios": "^0.16.2"
+  }
+}
