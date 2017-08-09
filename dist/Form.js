@@ -6,7 +6,7 @@ class Form {
      *
      * @param {object} data
      */
-    constructor(data) {
+    constructor (data) {
         this.originalData = data
         this.inProgress = false
         this.formData = false
@@ -21,7 +21,7 @@ class Form {
     /**
      * Fetch all relevant data for the form.
      */
-    data() {
+    data () {
         let data = {}
 
         for (let property in this.originalData) {
@@ -78,7 +78,7 @@ class Form {
     /**
      * Reset the form fields.
      */
-    reset() {
+    reset () {
         if (typeof CKEDITOR != 'undefined') {
             for (let editor in CKEDITOR.instances) {
                 CKEDITOR.instances[editor].setData( '', function() { this.updateElement() })
@@ -97,7 +97,7 @@ class Form {
      * .
      * @param {string} url
      */
-    post(url) {
+    post (url) {
         return this.submit('post', url)
     }
 
@@ -106,7 +106,7 @@ class Form {
      * .
      * @param {string} url
      */
-    put(url) {
+    put (url) {
         return this.submit('put', url)
     }
 
@@ -115,7 +115,7 @@ class Form {
      * .
      * @param {string} url
      */
-    patch(url) {
+    patch (url) {
         return this.submit('patch', url)
     }
 
@@ -124,7 +124,7 @@ class Form {
      * .
      * @param {string} url
      */
-    delete(url) {
+    delete (url) {
         return this.submit('delete', url)
     }
 
@@ -134,11 +134,12 @@ class Form {
      * @param {string} requestType
      * @param {string} url
      */
-    submit(requestType, url) {
+    submit (requestType, url) {
+        this.errors.clear()
         this.inProgress = true
         let data = this.data()
 
-        if (this.formData && (requestType == 'patch' || requestType == 'put')) {
+        if (this.formData) {
             data = this.dataForm()
             data.append('_method', requestType)
             requestType = 'post'
