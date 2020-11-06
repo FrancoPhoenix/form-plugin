@@ -1,4 +1,5 @@
 import Errors from './Errors'
+import { objectToFormData } from 'object-to-formdata';
 
 class Form {
     /**
@@ -35,31 +36,13 @@ class Form {
      * Fetch all relevant data for the form in FormData.
      */
     dataForm () {
-        let data = new FormData()
-
-        for (let property in this.originalData) {
-            switch(true) {
-                case typeof this[property] === 'boolean':
-                    data.append(property, this[property] ? '1' : '0')
-
-                    break
-                case this[property] instanceof FileList:
-
-                    for (let file of this[property]) {
-                        data.append(property + '[]', file)
-                    }
-
-                    break
-                case this[property] === null:
-                    data.append(property, '')
-
-                    break
-                default:
-                    data.append(property, this[property])
+        return objectToFormData(
+            this.data(),
+            {
+                indices: true,
+                booleansAsIntegers: true
             }
-        }
-
-        return data
+        )
     }
 
     /**
@@ -85,8 +68,20 @@ class Form {
             }
         }
 
-        for (let field in this.originalData) {
-            this[field] = ''
+        let clone = Object.assign({}, this.originalData)
+
+        for (let field in clone) {
+            let value = clone[field]
+
+            if ((typeof value === "object" || typeof value === 'function') && (value !== null)) {
+                value = {}
+            }
+
+            if (Array.isArray(value)) {
+                value = []
+            }
+
+            this[field] = value
         }
 
         this.errors.clear()
@@ -154,9 +149,9 @@ class Form {
                 })
                 .catch(error => {
                     this.inProgress = false
-                    this.errors.record(error.response.data)
+                    this.errors.record(error.response.data.errors)
 
-                    reject(error.response.data)
+                    reject(error.response.data.errors)
                 })
         })
     }
