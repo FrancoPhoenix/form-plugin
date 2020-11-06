@@ -38,7 +38,7 @@ class Errors {
 
         if (field) {
             for (let index in this.errors) {
-                if (index.indexOf(field) >= 0) {
+                if (index === field) {
                     for (let message of this.errors[index]) {
                         result += message + '\n'
                     }
