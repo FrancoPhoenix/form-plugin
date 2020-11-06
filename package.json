@@ -11,6 +11,7 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "object-to-formdata": "^3.0.9"
   }
 }
